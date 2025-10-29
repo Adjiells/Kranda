@@ -1,9 +1,293 @@
-:root { color-scheme: light dark; }
-body { font-family: system-ui, sans-serif; margin: 0; }
-main { max-width: 640px; margin: 0 auto; padding: 16px; }
-header { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
-form { display: grid; grid-template-columns: 1fr 220px auto; gap: 8px; margin: 12px 0; }
-ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
-li { display: flex; justify-content: space-between; align-items: center; border: 1px solid #ddd3; border-radius: 12px; padding: 10px 12px; }
-button { border: none; border-radius: 10px; padding: 8px 12px; background: #0ea5e9; color: white; }
-#installBtn { background: #10b981; }
+/*
+ * Stylish and modern theme for Kranda
+ *
+ * This stylesheet provides a fresh look using a neutral palette with a blue accent.
+ * It makes use of CSS variables for easy customization and supports both light
+ * and dark mode automatically via the color-scheme property.
+ */
+
+/* Root variables to control colours and spacing */
+:root {
+  color-scheme: light dark;
+  --primary: #0ea5e9;
+  --primary-dark: #0284c7;
+  --secondary: #f1f5f9;
+  --danger: #ef4444;
+  --bg-light: #f8fafc;
+  --bg-dark: #1e293b;
+  --surface-light: #ffffff;
+  --surface-dark: #334155;
+  --border-light: #e2e8f0;
+  --border-dark: #475569;
+  --text-light: #0f172a;
+  --text-dark: #f1f5f9;
+  --shadow: 0 4px 6px rgb(0 0 0 / 0.1);
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', system-ui, sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-light);
+  min-height: 100vh;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
+}
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 4rem;
+  position: relative;
+}
+
+/* Header styling */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Buttons */
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn.install {
+  background-color: #10b981;
+  color: #ffffff;
+}
+.btn.install:hover {
+  background-color: #059669;
+}
+
+.btn.primary,
+.btn {
+  background-color: var(--primary);
+  color: #ffffff;
+}
+.btn.primary:hover,
+.btn:hover {
+  background-color: var(--primary-dark);
+}
+
+.btn.secondary {
+  background-color: var(--secondary);
+  color: var(--text-light);
+}
+.btn.secondary:hover {
+  background-color: #e2e8f0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .btn.secondary {
+    background-color: var(--surface-dark);
+    color: var(--text-dark);
+  }
+  .btn.secondary:hover {
+    background-color: #475569;
+  }
+}
+
+/* Event list */
+.event-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.event-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.8rem 1rem;
+  background-color: var(--surface-light);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  gap: 0.75rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .event-item {
+    background-color: var(--surface-dark);
+    border-color: var(--border-dark);
+  }
+}
+
+.event-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1 1 auto;
+}
+
+.event-title {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.event-date {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.event-notes {
+  font-size: 0.875rem;
+  color: #475569;
+}
+
+.event-actions {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+.icon-btn:hover {
+  background-color: #f3f4f6;
+}
+.icon-btn.delete {
+  color: var(--danger);
+}
+.icon-btn.delete:hover {
+  background-color: #fee2e2;
+}
+@media (prefers-color-scheme: dark) {
+  .icon-btn:hover {
+    background-color: #475569;
+  }
+  .icon-btn.delete:hover {
+    background-color: #991b1b;
+  }
+}
+
+/* Floating Action Button */
+.fab {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: #ffffff;
+  border: none;
+  font-size: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 6px 10px rgb(0 0 0 / 0.2);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.fab:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Modal overlay */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: var(--surface-light);
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: var(--shadow);
+}
+@media (prefers-color-scheme: dark) {
+  .modal-content {
+    background-color: var(--surface-dark);
+  }
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: var(--surface-light);
+  color: var(--text-light);
+}
+
+textarea {
+  resize: vertical;
+}
+
+@media (prefers-color-scheme: dark) {
+  input,
+  textarea {
+    background-color: var(--surface-dark);
+    border-color: var(--border-dark);
+    color: var(--text-dark);
+  }
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
