@@ -68,5 +68,22 @@
       });
     });
   </script>
+
+  <button id="enableDaily">Ingatkan harian</button>
+<script>
+  OneSignalDeferred.push(async function(OneSignal) {
+    document.getElementById('enableDaily').onclick = async () => {
+      // pastikan permission sudah diizinkan:
+      await OneSignal.Notifications.requestPermission();
+      // set tag agar bisa disegmentasi
+      await OneSignal.User.addTag('daily', 'true');        // ikut daily
+      await OneSignal.User.addTag('reminderTime', '07:00'); // opsional: jam favorit
+      alert('Pengingat harian diaktifkan ✅');
+    };
+  });
+</script>
+
+  
 </body>
 </html>
+
