@@ -25,6 +25,7 @@
       <h1>Agenda</h1>
       <button id="installBtn" hidden>Install</button>
       <button id="enablePush">Aktifkan Notifikasi</button>
+      <button id="enableDaily">Ingatkan harian</button>
     </header>
 
     <form id="f">
@@ -68,8 +69,7 @@
       });
     });
   </script>
-
-  <button id="enableDaily">Ingatkan harian</button>
+  
 <script>
   OneSignalDeferred.push(async function(OneSignal) {
     document.getElementById('enableDaily').onclick = async () => {
@@ -86,4 +86,5 @@
   
 </body>
 </html>
+
 
