@@ -2,89 +2,88 @@
 <html lang="id">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0ea5e9" />
+  <title>Kranda &mdash; Agenda Modern</title>
+  <!-- Manifest to enable install as PWA -->
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="stylesheet" href="styles.css" />
-  <title>Agenda PWA</title>
-
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "8e63d294-5e9d-4c27-ad35-5fee39e40091",
+  <!-- Preload Google Fonts for improved typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Core styles -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- OneSignal SDK for push notifications -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    // Initialise OneSignal. Replace the safari_web_id with your own value if targeting iOS/Safari.
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function (OneSignal) {
+      await OneSignal.init({
+        appId: "8e63d294-5e9d-4c27-ad35-5fee39e40091",
+        safari_web_id: "GANTI_DENGAN_SAFARI_WEB_ID"
+      });
     });
-  });
-</script>
-
+  </script>
 </head>
 <body>
   <main>
-    <header>
-      <h1>Agenda</h1>
-      <button id="installBtn" hidden>Install</button>
-      <button id="enablePush">Aktifkan Notifikasi</button>
-      <button id="enableDaily">Ingatkan harian</button>
+    <!-- Application header with title and action buttons -->
+    <header class="app-header">
+      <h1 class="app-title">Kranda</h1>
+      <div class="header-actions">
+        <!-- The install button shows when the beforeinstallprompt event fires -->
+        <button id="installBtn" class="btn install" hidden>Install</button>
+        <button id="enablePush" class="btn">Aktifkan Notifikasi</button>
+        <button id="enableDaily" class="btn secondary">Ingatkan Harian</button>
+      </div>
     </header>
 
-    <form id="f">
-      <input id="title" placeholder="Judul agenda" required />
-      <input id="start" type="datetime-local" required />
-      <button>Simpan</button>
-    </form>
+    <!-- List of agenda events populated by app.js -->
+    <ul id="list" class="event-list"></ul>
 
-    <ul id="list"></ul>
+    <!-- Floating action button to add a new agenda -->
+    <button id="addBtn" class="fab" aria-label="Tambah agenda">＋</button>
   </main>
 
+  <!-- Modal overlay for adding or editing an agenda item -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <h2 id="modalTitle">Tambah Agenda</h2>
+      <form id="agendaForm" class="form-grid">
+        <label for="title">Judul</label>
+        <input id="title" type="text" required placeholder="Judul agenda" />
+        <label for="start">Waktu</label>
+        <input id="start" type="datetime-local" required />
+        <label for="notes">Catatan</label>
+        <textarea id="notes" rows="3" placeholder="Opsional"></textarea>
+        <div class="modal-actions">
+          <button type="submit" class="btn primary">Simpan</button>
+          <button type="button" id="cancelBtn" class="btn secondary">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Application logic -->
   <script type="module" src="app.js"></script>
   <script>
-    // PWA install prompt
+    // Handle PWA installation prompt
     let deferredPrompt;
-    const btn = document.getElementById('installBtn');
+    const installBtn = document.getElementById('installBtn');
     window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault(); deferredPrompt = e; btn.hidden = false;
+      e.preventDefault(); deferredPrompt = e; installBtn.hidden = false;
     });
-    btn?.addEventListener('click', async () => {
-      btn.hidden = true; await deferredPrompt.prompt(); deferredPrompt = null;
+    installBtn?.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      installBtn.hidden = true;
+      await deferredPrompt.prompt();
+      deferredPrompt = null;
     });
-
-    // Service Worker
+    // Register service worker for offline support
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
     }
   </script>
-
-  <!-- OneSignal SDK (web push) -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" async=""></script>
-  <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "8e63d294-5e9d-4c27-ad35-5fee39e40091",
-        safari_web_id: "GANTI_DENGAN_SAFARI_WEB_ID" // untuk iOS/Mac Safari
-      });
-      document.getElementById('enablePush').addEventListener('click', () => {
-        OneSignal.Notifications.requestPermission();
-      });
-    });
-  </script>
-  
-<script>
-  OneSignalDeferred.push(async function(OneSignal) {
-    document.getElementById('enableDaily').onclick = async () => {
-      // pastikan permission sudah diizinkan:
-      await OneSignal.Notifications.requestPermission();
-      // set tag agar bisa disegmentasi
-      await OneSignal.User.addTag('daily', 'true');        // ikut daily
-      await OneSignal.User.addTag('reminderTime', '07:00'); // opsional: jam favorit
-      alert('Pengingat harian diaktifkan ✅');
-    };
-  });
-</script>
-
-  
 </body>
 </html>
-
-
